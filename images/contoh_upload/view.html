@@ -1,0 +1,47 @@
+<input type="file" id="file" name="file" enctype="multipart/form-data" />
+
+<script>
+function Popup(data) 
+    {
+        var mywindow = window.open('', 'my div', 'height=400,width=600');
+        this.document.write('<html><head><title>my div</title>');
+        /*optional stylesheet*/ //mywindow.document.write('<link rel="stylesheet" href="main.css" type="text/css" />');
+        this.document.write('</head><body >');
+        this.document.write(data);
+        this.document.write('</body></html>');
+
+        //mywindow.print();
+        //mywindow.close();
+
+        return true;
+    }
+</script>	
+ <script>
+ document.getElementById('file').addEventListener('change', readFile, false);
+
+   function readFile (evt) {
+       var files = evt.target.files;
+       var file = files[0];           
+       var reader = new FileReader();
+       reader.onload = function() {
+         //console.log(this.result);            
+         var obj = this.result;            
+		 console.log(JSON.stringify(obj, null, 2));
+		 var temp = new Array();
+		 var html;
+		 html ="<table><tr>";
+		 temp = obj.split('\t');		
+		 for (a in temp ) {
+			html += "<td>["+temp[a].replace('\r\n',']</td></tr><tr><td>[')+"]</td>"; // Explicitly include base as per Álvaro's comment			
+		 }
+		 html += "</tr></table>";
+		 //console.log(html.replace('\r\n','|</td></tr><tr><td>|'));
+		 //console.log(html);
+		 //Popup(html.replace('\r\n','|</td></tr><tr><td>|'));
+		 Popup(html);
+       }
+       reader.readAsText(file)
+    }
+</script>
+
+
